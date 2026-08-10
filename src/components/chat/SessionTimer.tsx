@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface SessionTimerProps {
   endTime: Date;
@@ -7,6 +7,9 @@ interface SessionTimerProps {
 
 export const SessionTimer: React.FC<SessionTimerProps> = ({ endTime, onSessionEnd }) => {
   const [timeLeft, setTimeLeft] = useState<number>(0);
+  // Store onSessionEnd in a ref so changing it never re-triggers the interval effect
+  const onSessionEndRef = useRef(onSessionEnd);
+  useEffect(() => { onSessionEndRef.current = onSessionEnd; });
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -21,16 +24,16 @@ export const SessionTimer: React.FC<SessionTimerProps> = ({ endTime, onSessionEn
       setTimeLeft(remaining);
       if (remaining <= 0) {
         clearInterval(timer);
-        onSessionEnd();
+        onSessionEndRef.current(); // Use ref — never changes reference identity
       }
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [endTime, onSessionEnd]);
+  }, [endTime]); // ONLY re-run when endTime changes, NOT when onSessionEnd changes
 
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
-  const isLowTime = timeLeft <= 120; // 2 mins remaining
+  const isLowTime = timeLeft <= 120;
 
   return (
     <div style={{
@@ -44,21 +47,15 @@ export const SessionTimer: React.FC<SessionTimerProps> = ({ endTime, onSessionEn
       color: isLowTime ? '#f87171' : '#06b6d4',
       fontSize: 13,
       fontWeight: 800,
-      fontFamily: "'Fira Code', monospace",
+      fontFamily: "'Fira Code', 'Courier New', monospace",
       letterSpacing: '0.04em',
     }}>
       <span style={{ fontSize: 14 }}>⏱️</span>
-      <span>
-        {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
-      </span>
+      <span>{String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}</span>
       {isLowTime && (
-        <span style={{
-          fontSize: 10,
-          fontWeight: 800,
-          color: '#f43f5e',
-          textTransform: 'uppercase',
-          marginLeft: 4,
-        }}>Low Time</span>
+        <span style={{ fontSize: 10, fontWeight: 800, color: '#f43f5e', textTransform: 'uppercase', marginLeft: 4 }}>
+          Low Time
+        </span>
       )}
     </div>
   );

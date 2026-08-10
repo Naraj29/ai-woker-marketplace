@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useWorkers } from '../contexts/WorkerContext';
 import { WorkerProfile } from '../components/workers/WorkerProfile';
@@ -29,7 +29,7 @@ export const WorkerDetail: React.FC = () => {
     );
   }
 
-  const handleHire = async (workerId: string, durationMinutes: number) => {
+  const handleHire = useCallback(async (workerId: string, durationMinutes: number) => {
     try {
       const session = await hireWorker(workerId, durationMinutes);
       setSessionEndTime(session.endTime);
@@ -38,12 +38,12 @@ export const WorkerDetail: React.FC = () => {
       console.error('Failed to hire worker:', error);
       alert('Failed to initiate session. Please try again.');
     }
-  };
+  }, [hireWorker]);
 
-  const handleSessionEnd = () => {
+  const handleSessionEnd = useCallback(() => {
     setShowChat(false);
     setSessionEndTime(null);
-  };
+  }, []);
 
   if (showChat && sessionEndTime) {
     return (
