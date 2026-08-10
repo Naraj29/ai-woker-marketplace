@@ -1,37 +1,40 @@
 export const maxDuration = 60;
 
 export default async function handler(req, res) {
+  // Enable CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
   const apiKey =
     process.env.GEMMA_API_KEY ||
-    process.env.GOOGLE_API_KEY ||
-    process.env.VITE_GEMMA_API_KEY;
+    process.env.GOOGLE_API_KEY;
 
   if (!apiKey) {
     return res.status(500).json({
-      error:
-        'GEMMA_API_KEY environment variable is not configured. Set it in Vercel Environment Variables.',
+      error: 'GEMMA_API_KEY is not set. Add it in Vercel → Settings → Environment Variables.',
     });
   }
 
   try {
     const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-    const { prompt, systemPrompt, modelName } = body || {};
-
-    const selectedModel =
-      process.env.GEMMA_MODEL ||
-      process.env.VITE_GEMMA_MODEL ||
-      modelName ||
-      'gemma-2-27b-it';
+    const { prompt, systemPrompt } = body || {};
 
     if (!prompt) {
       return res.status(400).json({ error: 'Prompt parameter is required' });
     }
 
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`;
+    // Use a safe, known-working model. Do NOT rely on env var to avoid stale config.
+    const model = 'gemma-2-9b-it';
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
     const parts = [];
     if (systemPrompt) {
@@ -53,36 +56,28 @@ export default async function handler(req, res) {
       }),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      console.error('Gemma API error:', response.status, errorData);
+      console.error(`[Gemma API Error] status=${response.status} model=${model}`, JSON.stringify(data));
       return res.status(response.status).json({
-        error: `Gemma API returned error status ${response.status}`,
-        details: errorData,
+        error: data?.error?.message || `Gemma API error ${response.status}`,
+        details: data,
       });
     }
 
-    const data = await response.json();
-
     if (
       data.candidates &&
-      data.candidates[0] &&
-      data.candidates[0].content &&
-      data.candidates[0].content.parts &&
-      data.candidates[0].content.parts[0]
+      data.candidates[0]?.content?.parts?.[0]?.text
     ) {
       return res.status(200).json({
         text: data.candidates[0].content.parts[0].text,
       });
     }
 
-    return res
-      .status(500)
-      .json({ error: 'Invalid response format from Gemma API' });
+    return res.status(500).json({ error: 'Unexpected response format from Gemma API', raw: data });
   } catch (error) {
-    console.error('Server error:', error);
-    return res
-      .status(500)
-      .json({ error: error.message || 'Internal server error' });
+    console.error('[Server Error]', error);
+    return res.status(500).json({ error: error.message || 'Internal server error' });
   }
 }
