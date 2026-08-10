@@ -1,6 +1,6 @@
 # ⚡ WorkerX AI — Autonomous AI Specialist Marketplace
 
-> **Official Competition Entry for the [Build with Gemma Hackathon](https://www.kaggle.com/competitions/build-with-gemma-tfug-prayagraj-ai-prayagraj-in-person) (TFUG Prayagraj AI)**  
+> **A Solo Fun Project**  
 > *Deploy specialized, autonomous AI professionals at 1/10th the cost of traditional human retainers—powered 100% by Google Gemma 2.*
 
 ![Gemma API Verified](https://img.shields.io/badge/AI_Model-Google_Gemma_2-6366f1?style=for-the-badge&logo=google)
@@ -103,19 +103,7 @@ Open [http://localhost:5174](http://localhost:5174) in your browser.
 
 ---
 
-## 📋 Hackathon Final Checklist
-
-| Requirement | Status | Verification |
-| :--- | :---: | :--- |
-| **Only Gemma Model Used** | ✅ PASS | Verified in `api/gemma.ts` (`gemma-2-27b-it`) |
-| **No API Key Exposure** | ✅ PASS | Grep search for `AIza` returns 0 results |
-| **Live Web App Link** | ✅ PASS | Deployed on Vercel |
-| **Public GitHub Repository** | ✅ PASS | [GitHub Repo](https://github.com/Naraj29/ai-woker-marketplace) |
-| **TypeScript Build** | ✅ PASS | `npm run build` completed with 0 errors |
-
----
-
-## 📄 License
+##  License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
@@ -123,5 +111,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ## 🏆 Acknowledgments
 
-- Built for the **Build with Gemma Hackathon** (TFUG Prayagraj AI)
 - Powered by [Google Gemma AI Models](https://ai.google.dev/gemma)
