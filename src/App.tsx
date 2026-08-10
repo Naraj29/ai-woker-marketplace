@@ -14,8 +14,12 @@ const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <div className="text-gray-500">Loading...</div>
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        height: '100vh', background: '#080910', color: '#a5b4fc',
+        fontSize: 16, fontWeight: 700, fontFamily: 'Inter, system-ui, sans-serif'
+      }}>
+        Loading WorkerX AI...
       </div>
     );
   }
