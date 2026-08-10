@@ -55,7 +55,7 @@ Unlike naive frontend demos that expose API keys in browser network tabs, Worker
 - **Frontend**: React 19, TypeScript, Vite 8, React Router v7
 - **Styling**: Obsidian Glassmorphism System, Tailwind CSS v4, Inter Typography
 - **Backend**: Node.js, Vercel Serverless Functions (`/api/gemma.ts`)
-- **AI Core**: Google AI Studio Gemma 2 Models (`gemma-2-27b-it` / `gemma-3-27b-it`)
+- **AI Core**: Google AI Studio Gemma 2 Models (`gemma-2-27b-it` / `gemma-2-9b-it`)
 
 ---
 
