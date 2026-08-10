@@ -33,16 +33,33 @@ export const SessionTimer: React.FC<SessionTimerProps> = ({ endTime, onSessionEn
   const isLowTime = timeLeft <= 120; // 2 mins remaining
 
   return (
-    <div className={`flex items-center space-x-2 px-3.5 py-1.5 rounded-xl border text-xs font-mono font-bold transition-all ${
-      isLowTime
-        ? 'bg-rose-500/20 text-rose-300 border-rose-500/40 animate-pulse'
-        : 'bg-indigo-500/10 text-cyan-300 border-indigo-500/30'
-    }`}>
-      <span className="text-sm">⏱️</span>
+    <div style={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 8,
+      padding: '8px 14px',
+      borderRadius: 12,
+      background: isLowTime ? 'rgba(244,63,94,0.15)' : 'rgba(99,102,241,0.12)',
+      border: isLowTime ? '1px solid rgba(244,63,94,0.4)' : '1px solid rgba(99,102,241,0.3)',
+      color: isLowTime ? '#f87171' : '#06b6d4',
+      fontSize: 13,
+      fontWeight: 800,
+      fontFamily: "'Fira Code', monospace",
+      letterSpacing: '0.04em',
+    }}>
+      <span style={{ fontSize: 14 }}>⏱️</span>
       <span>
         {String(minutes).padStart(2, '0')}:{String(seconds).padStart(2, '0')}
       </span>
-      {isLowTime && <span className="text-[10px] uppercase font-bold text-rose-400">Low Time</span>}
+      {isLowTime && (
+        <span style={{
+          fontSize: 10,
+          fontWeight: 800,
+          color: '#f43f5e',
+          textTransform: 'uppercase',
+          marginLeft: 4,
+        }}>Low Time</span>
+      )}
     </div>
   );
 };
