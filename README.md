@@ -1,154 +1,127 @@
-# AI Worker Marketplace
+# ⚡ WorkerX AI — Autonomous AI Specialist Marketplace
 
-A prototype web application for hiring AI workers at a fraction of the cost of human professionals. Built for the Build with Gemma hackathon.
+> **Official Competition Entry for the [Build with Gemma Hackathon](https://www.kaggle.com/competitions/build-with-gemma-tfug-prayagraj-ai-prayagraj-in-person) (TFUG Prayagraj AI)**  
+> *Deploy specialized, autonomous AI professionals at 1/10th the cost of traditional human retainers—powered 100% by Google Gemma 2.*
 
-## Features
+![Gemma API Verified](https://img.shields.io/badge/AI_Model-Google_Gemma_2-6366f1?style=for-the-badge&logo=google)
+![Vercel Serverless](https://img.shields.io/badge/Backend-Vercel_Serverless-000000?style=for-the-badge&logo=vercel)
+![Security Passed](https://img.shields.io/badge/Security-Zero_Client_Key_Exposure-10b981?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)
 
-- **4 AI Worker Types**: Teacher, Health Guide, Therapist, Message Formatter
-- **Cost Comparison**: Shows savings compared to human workers (up to 90% savings)
-- **Time-based Rental**: Hire workers by hour, day, or week
-- **Real-time Chat**: Interactive chat interface with AI workers
-- **Gemma API Integration**: Powered by Google's Gemma AI model
-- **Responsive Design**: Works on desktop and mobile devices
+---
 
-## Tech Stack
+## 🚀 Overview
 
-- **Frontend**: React Vite with TypeScript
-- **Styling**: Tailwind CSS
-- **State Management**: React Context API
-- **AI Integration**: Google Gemma API
-- **Authentication**: Mock authentication (prototype)
-- **Deployment**: Vercel
+**WorkerX AI** is a next-generation web application where users can discover, evaluate, and instantly hire specialized AI professionals—from STEM & Coding Tutors to Bio-Fitness Coaches, Mindful Counselors, and Copy Architects. 
 
-## Getting Started
+By executing tasks through Google's **Gemma 2 instruction-tuned models**, users save up to **92%** on hourly consultation rates with zero waiting time or scheduling conflicts.
 
-### Prerequisites
+---
 
-- Node.js 18+ installed
-- Google AI Studio API key ([Get one here](https://aistudio.google.com))
+## ✨ Key Features
 
-### Installation
+- 🎓 **Gemma STEM & Code Tutor**: Master algorithms, data structures, calculus, and system design with step-by-step code walk-throughs.
+- 🏃 **Gemma Bio & Fitness Coach**: Formulate custom macro diets, hypertrophy routines, and sleep optimization strategies.
+- 🧠 **Gemma Mindful Counselor**: Safe, compassionate space for emotional reframing, CBT techniques, and stress relief.
+- ✍️ **Gemma Copy & Doc Architect**: Transform raw drafts into executive-ready copy, polished resumes, and formatted Markdown reports.
+- ⏱️ **Interactive Session Booking**: Hire specialists for 15m, 30m, 1h, or 2h with real-time cost calculation ($1.25 for 15 mins!).
+- 📥 **Export Chat Transcripts**: Download full session notes in `.txt` format with a single click.
+- 🎨 **Obsidian Dark Glassmorphism UI**: High-contrast, responsive interface built with glass cards, gradient glows, and mobile drawer controls.
 
-1. Clone the repository:
-```bash
-git clone <your-repo-url>
-cd ai-worker-marketplace
+---
+
+## 🔒 Security & Architecture (Rule #2 Compliant)
+
+```
+  User Browser                Vercel Serverless Edge              Google AI Studio
+ ┌──────────────┐   POST     ┌────────────────────────┐   POST   ┌─────────────────┐
+ │ WorkerX App  │───────────>│ /api/gemma             │─────────>│ Gemma 2 Model   │
+ │ (No API Key) │            │ (Holds GEMMA_API_KEY)  │          │ (Google API)    │
+ └──────────────┘ <──────────└────────────────────────┘ <────────└─────────────────┘
+                   Response             Response
 ```
 
-2. Install dependencies:
+### Server-Side Key Isolation
+Unlike naive frontend demos that expose API keys in browser network tabs, WorkerX AI handles all AI inference through a dedicated Vercel Serverless Function ([`api/gemma.ts`](./api/gemma.ts)):
+1. The browser sends prompts to `/api/gemma`.
+2. The server reads `GEMMA_API_KEY` from secure server environment variables.
+3. The server forwards the prompt to Google AI Studio's Gemma model endpoint (`gemma-2-27b-it`).
+4. **Result**: Your secret API key **never** reaches client-side JavaScript or browser dev tools.
+
+---
+
+## 🛠️ Tech Stack
+
+- **Frontend**: React 19, TypeScript, Vite 8, React Router v7
+- **Styling**: Obsidian Glassmorphism System, Tailwind CSS v4, Inter Typography
+- **Backend**: Node.js, Vercel Serverless Functions (`/api/gemma.ts`)
+- **AI Core**: Google AI Studio Gemma 2 Models (`gemma-2-27b-it` / `gemma-3-27b-it`)
+
+---
+
+## 🏁 Getting Started Locally
+
+### 1. Prerequisites
+- Node.js 18 or higher
+- A Google AI Studio API key ([Get one here](https://aistudio.google.com))
+
+### 2. Installation
 ```bash
+git clone https://github.com/Naraj29/ai-woker-marketplace.git
+cd ai-woker-marketplace
 npm install
 ```
 
-3. Set up environment variables:
+### 3. Environment Setup
+Copy `.env.example` to `.env`:
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env` and add your Gemma API key:
-```
-VITE_GEMMA_API_KEY=your_actual_api_key_here
-VITE_GEMMA_MODEL=gemma-3-27b-it
+Add your Google AI Studio key:
+```env
+GEMMA_API_KEY=your_actual_api_key_here
+GEMMA_MODEL=gemma-2-27b-it
 ```
 
-4. Run the development server:
+### 4. Run Dev Server
 ```bash
 npm run dev
 ```
+Open [http://localhost:5174](http://localhost:5174) in your browser.
 
-5. Open your browser to `http://localhost:5173`
+---
 
-## Project Structure
+## 🌐 Production Deployment on Vercel
 
-```
-ai-worker-marketplace/
-├── src/
-│   ├── api/              # API integration (Gemma, Workers, Auth)
-│   ├── components/       # React components
-│   │   ├── chat/        # Chat interface components
-│   │   ├── common/      # Shared components
-│   │   ├── layout/      # Layout components
-│   │   └── workers/     # Worker-related components
-│   ├── contexts/         # React Context providers
-│   ├── pages/           # Page components
-│   ├── types/           # TypeScript interfaces
-│   └── utils/           # Utility functions
-├── public/              # Static assets
-└── package.json
-```
+1. Push code to your public GitHub repository.
+2. Go to [vercel.com/new](https://vercel.com/new) and import your repository.
+3. Under **Environment Variables**, add:
+   - `GEMMA_API_KEY`: `your_google_ai_studio_key`
+   - `GEMMA_MODEL`: `gemma-2-27b-it`
+4. Click **Deploy**. Vercel will automatically build the Vite client and deploy the `/api/gemma` serverless endpoint.
 
-## AI Workers Available
+---
 
-### 1. AI Teacher Pro ($5/hr vs $50/hr human)
-- Subject tutoring (Math, Science, History, etc.)
-- Homework help
-- Exam preparation
-- Concept explanations
+## 📋 Hackathon Final Checklist
 
-### 2. Wellness Guide AI ($3/hr vs $30/hr human)
-- Fitness planning
-- Nutrition guidance
-- Wellness tips
-- Stress management
+| Requirement | Status | Verification |
+| :--- | :---: | :--- |
+| **Only Gemma Model Used** | ✅ PASS | Verified in `api/gemma.ts` (`gemma-2-27b-it`) |
+| **No API Key Exposure** | ✅ PASS | Grep search for `AIza` returns 0 results |
+| **Live Web App Link** | ✅ PASS | Deployed on Vercel |
+| **Public GitHub Repository** | ✅ PASS | [GitHub Repo](https://github.com/Naraj29/ai-woker-marketplace) |
+| **TypeScript Build** | ✅ PASS | `npm run build` completed with 0 errors |
 
-### 3. MindSupport AI ($8/hr vs $80/hr human)
-- Emotional support
-- Stress management
-- Coping strategies
-- Crisis resources
+---
 
-### 4. TextPerfect AI ($2/hr vs $20/hr human)
-- Grammar checking
-- Style improvement
-- Tone adjustment
-- Professional formatting
+## 📄 License
 
-## Deployment
+Distributed under the MIT License. See `LICENSE` for more information.
 
-### Vercel Deployment
+---
 
-1. Push your code to GitHub
-2. Go to [vercel.com/new](https://vercel.com/new)
-3. Import your repository
-4. Add environment variables:
-   - `GEMMA_API_KEY`: Your Google AI Studio API key
-   - `GEMMA_MODEL`: The Gemma model name (e.g., `gemma-3-27b-it`)
-5. Deploy
+## 🏆 Acknowledgments
 
-## Important Security Notes
-
-- **Never commit your `.env` file** to Git
-- **Always use environment variables** for API keys
-- **API keys should only be used server-side** in production
-- This prototype uses client-side API calls for demo purposes
-
-## Hackathon Submission
-
-This project was built for the Build with Gemma hackathon and meets all requirements:
-
-- ✅ Uses Gemma API for AI functionality
-- ✅ Public GitHub repository
-- ✅ Live deployment on Vercel
-- ✅ Demo video showing functionality
-- ✅ Kaggle writeup with all links
-
-## Future Enhancements
-
-- Real GitHub OAuth authentication
-- Database persistence for user sessions
-- Payment integration for real rentals
-- More worker types (legal advisor, career coach, etc.)
-- Voice input/output capabilities
-- File sharing features
-- Admin dashboard
-- Analytics and usage tracking
-
-## License
-
-MIT License - feel free to use this project for learning and development.
-
-## Acknowledgments
-
-- Built for [Build with Gemma Hackathon](https://www.kaggle.com/competitions/build-with-gemma-tfug-prayagraj-ai-prayagraj-in-person)
-- Powered by [Google Gemma](https://ai.google.dev/gemma)
-- UI styled with [Tailwind CSS](https://tailwindcss.com/)
+- Built for the **Build with Gemma Hackathon** (TFUG Prayagraj AI)
+- Powered by [Google Gemma AI Models](https://ai.google.dev/gemma)
