@@ -32,8 +32,8 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Prompt parameter is required' });
     }
 
-    // Use a safe, known-working model. Do NOT rely on env var to avoid stale config.
-    const model = 'gemma-2-9b-it';
+    // Confirmed available model for this API key (run ListModels to verify)
+    const model = 'gemma-4-31b-it';
     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
     const parts = [];
