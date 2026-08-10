@@ -1,5 +1,34 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+// Lightweight markdown → HTML (no external deps)
+function renderMarkdown(text: string): string {
+  return text
+    // Headings
+    .replace(/^### (.+)$/gm, '<h3 style="margin:14px 0 6px;font-size:15px;color:#c7d2fe;font-weight:700;">$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2 style="margin:16px 0 8px;font-size:17px;color:#a5b4fc;font-weight:700;">$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1 style="margin:16px 0 8px;font-size:19px;color:#818cf8;font-weight:800;">$1</h1>')
+    // Bold and italic
+    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong style="color:#e2e8f0;font-weight:700;">$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em style="color:#cbd5e1;">$1</em>')
+    // Inline code
+    .replace(/`([^`]+)`/g, '<code style="background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);border-radius:4px;padding:1px 6px;font-family:monospace;font-size:12px;color:#a5b4fc;">$1</code>')
+    // Bullet lists
+    .replace(/^\* (.+)$/gm, '<li style="margin:4px 0;padding-left:4px;">$1</li>')
+    .replace(/^- (.+)$/gm, '<li style="margin:4px 0;padding-left:4px;">$1</li>')
+    .replace(/^• (.+)$/gm, '<li style="margin:4px 0;padding-left:4px;">$1</li>')
+    // Wrap consecutive <li> in <ul>
+    .replace(/(<li[^>]*>[\s\S]*?<\/li>\n?)+/g, '<ul style="margin:8px 0;padding-left:20px;list-style:disc;">$&</ul>')
+    // Numbered lists
+    .replace(/^\d+\. (.+)$/gm, '<li style="margin:4px 0;">$1</li>')
+    // Horizontal rule
+    .replace(/^---$/gm, '<hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:14px 0;"/>')
+    // Line breaks
+    .replace(/\n\n/g, '<br/><br/>')
+    .replace(/\n/g, '<br/>');
+}
+
+
 interface Message {
   id: string;
   role: 'user' | 'assistant';
@@ -145,7 +174,10 @@ export const MessageList: React.FC<MessageListProps> = ({ messages, workerIcon, 
                     )}
                   </div>
                 </div>
-                {msg.content}
+                {isUser
+                  ? msg.content
+                  : <div dangerouslySetInnerHTML={{ __html: renderMarkdown(msg.content) }} />
+                }
               </div>
             </div>
           </div>

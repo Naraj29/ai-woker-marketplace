@@ -188,7 +188,7 @@ export const WorkerProfile: React.FC<WorkerProfileProps> = ({ worker, onHire, lo
 
         {/* Included */}
         <ul style={{ listStyle: 'none', padding: 0, marginBottom: 24, fontSize: 12, display: 'flex', flexDirection: 'column', gap: 10 }}>
-          {['Instant sub-second connection', 'Powered strictly by Gemma 2 AI', 'Full chat history export'].map(f => (
+          {['Instant sub-second connection', 'Powered strictly by Gemma 4 AI', 'Full chat history export'].map(f => (
             <li key={f} style={{ display: 'flex', alignItems: 'center', gap: 10, color: '#94a3b8' }}>
               <span style={{ color: '#10b981', fontWeight: 900 }}>✓</span> {f}
             </li>

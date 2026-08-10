@@ -42,7 +42,7 @@ export const Footer: React.FC = () => {
               Architecture
             </h4>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8, fontSize: 13 }}>
-              <li style={{ color: '#94a3b8' }}>Google Gemma 2 Core</li>
+              <li style={{ color: '#94a3b8' }}>Google Gemma 4 Core</li>
               <li style={{ color: '#94a3b8' }}>Vercel Serverless Endpoint</li>
               <li style={{ color: '#94a3b8' }}>Zero Client API Key Leakage</li>
               <li style={{ color: '#94a3b8' }}>Sub-second Latency</li>

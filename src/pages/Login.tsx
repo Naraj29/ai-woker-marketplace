@@ -106,7 +106,7 @@ export const Login: React.FC = () => {
           </button>
 
           <p style={{ textAlign: 'center', fontSize: 11, color: '#334155', marginTop: 20 }}>
-            Prototype auth · Powered by Google Gemma 2
+            Prototype auth · Powered by Google Gemma 4
           </p>
         </form>
       </div>

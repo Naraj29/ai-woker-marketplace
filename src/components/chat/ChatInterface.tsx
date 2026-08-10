@@ -75,7 +75,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({ workerId, sessionE
                   padding: '3px 10px', background: 'rgba(16,185,129,0.15)', border: '1px solid rgba(16,185,129,0.3)',
                   borderRadius: 99, fontSize: 10, fontWeight: 800, color: '#10b981',
                   letterSpacing: '0.06em', textTransform: 'uppercase',
-                }}>Gemma 2 Live</span>
+                }}>Gemma 4 Live</span>
               </div>
               <p style={{ fontSize: 12, color: '#94a3b8', margin: '2px 0 0 0' }}>{worker.tagline}</p>
             </div>

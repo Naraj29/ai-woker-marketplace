@@ -87,7 +87,7 @@ export const Profile: React.FC = () => {
             Gemma Sessions
           </span>
           <div style={{ fontSize: 32, fontWeight: 900, color: '#a855f7' }}>12 Completed</div>
-          <span style={{ fontSize: 12, color: '#475569', marginTop: 4, display: 'block' }}>100% Gemma 2 execution</span>
+          <span style={{ fontSize: 12, color: '#475569', marginTop: 4, display: 'block' }}>100% Gemma 4 execution</span>
         </div>
 
         <div style={{
